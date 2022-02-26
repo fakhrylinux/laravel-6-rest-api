@@ -20,7 +20,8 @@ services:
           - laravel-app
 
   mysql-db:
-    image: mysql:5.7.37
+    image: mysql
+    restart: always
     container_name: mysql-db
     volumes:
       - ./run/var:/var/lib/mysql
@@ -35,6 +36,19 @@ services:
       backend:
         aliases:
           - db
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - '8000:80'
+    restart: always
+    environment:
+      PMA_HOST: mysql-db
+    depends_on:
+      - mysql-db
+    networks:
+      backend:
+        aliases:
+          - phpmyadmin
 
 networks:
   backend:
